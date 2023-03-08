@@ -178,10 +178,16 @@ v2g vert(appdata input)
             float4 atten = saturate(1.0 - lengthSq * unity_4LightAtten0 / 25.0) * _FurTouchStrength * furLength;
             //float4 rangeToggle = abs(frac(sqrt(25.0 / unity_4LightAtten0) * 100.0) - 0.22);
             float4 rangeToggle = abs(frac(sqrt(250000 / unity_4LightAtten0)) - 0.22);
-            output.furVector = rangeToggle[0] < 0.001 - unity_LightColor[0].r - unity_LightColor[0].g - unity_LightColor[0].b ? output.furVector - float3(toLightX[0], toLightY[0], toLightZ[0]) * rsqrt(lengthSq[0]) * atten[0] : output.furVector;
-            output.furVector = rangeToggle[1] < 0.001 - unity_LightColor[1].r - unity_LightColor[1].g - unity_LightColor[1].b ? output.furVector - float3(toLightX[1], toLightY[1], toLightZ[1]) * rsqrt(lengthSq[1]) * atten[1] : output.furVector;
-            output.furVector = rangeToggle[2] < 0.001 - unity_LightColor[2].r - unity_LightColor[2].g - unity_LightColor[2].b ? output.furVector - float3(toLightX[2], toLightY[2], toLightZ[2]) * rsqrt(lengthSq[2]) * atten[2] : output.furVector;
-            output.furVector = rangeToggle[3] < 0.001 - unity_LightColor[3].r - unity_LightColor[3].g - unity_LightColor[3].b ? output.furVector - float3(toLightX[3], toLightY[3], toLightZ[3]) * rsqrt(lengthSq[3]) * atten[3] : output.furVector;
+            bool4 selector = rangeToggle < (0.001).xxxx - float4(
+                dot(unity_LightColor[0].rgb, float3(1.0, 1.0, 1.0)),
+                dot(unity_LightColor[1].rgb, float3(1.0, 1.0, 1.0)),
+                dot(unity_LightColor[2].rgb, float3(1.0, 1.0, 1.0)),
+                dot(unity_LightColor[3].rgb, float3(1.0, 1.0, 1.0)));
+            float4 lenAtten = rsqrt(lengthSq) * atten;
+            output.furVector = selector[0] ? output.furVector - float3(toLightX[0], toLightY[0], toLightZ[0]) * lenAtten[0] : output.furVector;
+            output.furVector = selector[1] ? output.furVector - float3(toLightX[1], toLightY[1], toLightZ[1]) * lenAtten[1] : output.furVector;
+            output.furVector = selector[2] ? output.furVector - float3(toLightX[2], toLightY[2], toLightZ[2]) * lenAtten[2] : output.furVector;
+            output.furVector = selector[3] ? output.furVector - float3(toLightX[3], toLightY[3], toLightZ[3]) * lenAtten[3] : output.furVector;
         #endif
     #endif
 
