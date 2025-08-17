@@ -458,7 +458,7 @@ namespace lilToon
                 return;
             }
             AddDependency(ctx, path);
-            var sr = new StreamReader(path);
+            using var sr = new StreamReader(path);
             string line;
             while((line = sr.ReadLine()) != null)
             {
@@ -484,8 +484,6 @@ namespace lilToon
                     continue;
                 }
             }
-
-            sr.Close();
         }
 
         private static string GetTags(string line)
@@ -586,7 +584,7 @@ namespace lilToon
             if(File.Exists(pathForRP))
             {
                 AddDependency(ctx, pathForRP);
-                insertPass = ReadTextFile(pathForRP);
+                insertPass = File.ReadAllText(pathForRP);
                 return;
             }
 
@@ -599,13 +597,13 @@ namespace lilToon
             }
 
             AddDependency(ctx, subpath);
-            insertPass = ReadTextFile(subpath);
+            insertPass = File.ReadAllText(subpath);
         }
 
         private static StringBuilder ReadContainerFile(string path, string rpname, AssetImportContext ctx, bool doOptimize)
         {
             var sb = new StringBuilder();
-            var sr = new StreamReader(path);
+            using var sr = new StreamReader(path);
             string line;
 
             while((line = sr.ReadLine()) != null)
@@ -670,7 +668,6 @@ namespace lilToon
                 sb.AppendLine(line);
             }
 
-            sr.Close();
             return sb;
         }
 
@@ -703,7 +700,7 @@ namespace lilToon
 
             if(rpname == "URP" && !subpath.Contains("UsePass"))
             {
-                var sb1 = new StringBuilder(ReadTextFile(subpath));
+                var sb1 = new StringBuilder(File.ReadAllText(subpath));
                 var sb2 = new StringBuilder(sb1.ToString());
 
                 sb1.Replace(LIL_DOTS_SM_TAGS, " \"ShaderModel\" = \"4.5\"");
@@ -725,7 +722,7 @@ namespace lilToon
             }
             else
             {
-                sb.AppendLine(ReadTextFile(subpath));
+                sb.AppendLine(File.ReadAllText(subpath));
             }
         }
 
@@ -746,7 +743,7 @@ namespace lilToon
                 return;
             }
             AddDependency(ctx, subpath);
-            insertText = ReadTextFile(subpath);
+            insertText = File.ReadAllText(subpath);
         }
 
         private static void GetSubShaderInsertPost(string path, string rpname, StringBuilder sb, string line, AssetImportContext ctx)
@@ -766,7 +763,7 @@ namespace lilToon
                 return;
             }
             AddDependency(ctx, subpath);
-            insertPostText = ReadTextFile(subpath);
+            insertPostText = File.ReadAllText(subpath);
         }
 
         private static void GetProperties(string path, string rpname, StringBuilder sb, string line, AssetImportContext ctx, bool doOptimize)
@@ -795,7 +792,7 @@ namespace lilToon
                 return;
             }
             AddDependency(ctx, subpath);
-            string propText = ReadTextFile(subpath);
+            string propText = File.ReadAllText(subpath);
             if(doOptimize)
             {
                 propText = Regex.Replace(propText, @"\(""[^""]*""", "(\"\"");       // Display name
@@ -836,14 +833,6 @@ namespace lilToon
             #if LILTOON_LTCGI
             subShaderTags += " \"LTCGI\"=\"ALWAYS\"";
             #endif
-        }
-
-        private static string ReadTextFile(string path)
-        {
-            var sr = new StreamReader(path);
-            string text = sr.ReadToEnd();
-            sr.Close();
-            return text;
         }
 
         private static string FixNewlineCode(string text)

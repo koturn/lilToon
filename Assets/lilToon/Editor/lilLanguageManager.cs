@@ -121,7 +121,7 @@ namespace lilToon
         private static void LoadLanguage(string langPath)
         {
             if(string.IsNullOrEmpty(langPath) || !File.Exists(langPath)) return;
-            var sr = new StreamReader(langPath);
+            using var sr = new StreamReader(langPath);
 
             var str = sr.ReadLine();
             while ((str = sr.ReadLine()) != null)
@@ -136,7 +136,6 @@ namespace lilToon
                     loc.Remove(lineContents[0]);
                 }
             }
-            sr.Close();
         }
 
         private static void InitializeLabels()
