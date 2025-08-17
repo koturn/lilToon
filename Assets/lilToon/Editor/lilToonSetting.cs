@@ -206,9 +206,7 @@ public class lilToonSetting : ScriptableObject
     public static void SaveShaderSetting(lilToonSetting shaderSetting)
     {
         string shaderSettingPath = lilDirectoryManager.GetShaderSettingPath();
-        var sw = new StreamWriter(shaderSettingPath, false);
-        sw.Write(JsonUtility.ToJson(shaderSetting, true));
-        sw.Close();
+        File.WriteAllText(shaderSettingPath, JsonUtility.ToJson(shaderSetting, true));
     }
 
     internal static void LoadShaderSetting(ref lilToonSetting shaderSetting)
@@ -1541,15 +1539,7 @@ public class lilToonSetting : ScriptableObject
         shaders = shaders.Distinct().ToList();
         foreach(var path in shaders.Select(s => AssetDatabase.GetAssetPath(s)).Where(p => !string.IsNullOrEmpty(p)).ToArray())
         {
-            TextReader sr;
-            if(path.Contains(".lilcontainer"))
-            {
-                sr = new StringReader(lilShaderContainer.UnpackContainer(path));
-            }
-            else
-            {
-                sr = new StreamReader(path);
-            }
+            using TextReader sr = path.Contains(".lilcontainer") ? new StringReader(lilShaderContainer.UnpackContainer(path)) : new StreamReader(path);
             string line;
             bool isComment = false;
             while((line = sr.ReadLine()) != null)
@@ -1572,7 +1562,6 @@ public class lilToonSetting : ScriptableObject
                 var usePassShader = Shader.Find(shaderName);
                 if(usePassShader != null) shaders.Add(usePassShader);
             }
-            sr.Close();
         }
         return shaders.Distinct().ToList();
     }

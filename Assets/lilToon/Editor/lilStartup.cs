@@ -36,30 +36,22 @@ namespace lilToon
                     // RSP
                     if(!File.Exists(lilDirectoryManager.rspPath))
                     {
-                        var sw = new StreamWriter(lilDirectoryManager.rspPath,true);
-                        sw.Write("-r:System.Drawing.dll" + Environment.NewLine + "-define:SYSTEM_DRAWING");
-                        sw.Close();
+                        File.AppendAllText(lilDirectoryManager.rspPath, "-r:System.Drawing.dll" + Environment.NewLine + "-define:SYSTEM_DRAWING");
                         AssetDatabase.Refresh();
                         AssetDatabase.ImportAsset(editorPath);
                     }
 
-                    var sr = new StreamReader(lilDirectoryManager.rspPath);
-                    string s = sr.ReadToEnd();
-                    sr.Close();
+                    string s = File.ReadAllText(lilDirectoryManager.rspPath);
 
                     if(!s.Contains("r:System.Drawing.dll"))
                     {
-                        var sw = new StreamWriter(lilDirectoryManager.rspPath,true);
-                        sw.Write(Environment.NewLine + "-r:System.Drawing.dll");
-                        sw.Close();
+                        File.AppendAllText(lilDirectoryManager.rspPath, Environment.NewLine + "-r:System.Drawing.dll");
                         AssetDatabase.Refresh();
                         AssetDatabase.ImportAsset(editorPath);
                     }
                     if(!s.Contains("define:SYSTEM_DRAWING"))
                     {
-                        var sw = new StreamWriter(lilDirectoryManager.rspPath,true);
-                        sw.Write(Environment.NewLine + "-define:SYSTEM_DRAWING");
-                        sw.Close();
+                        File.AppendAllText(lilDirectoryManager.rspPath, Environment.NewLine + "-define:SYSTEM_DRAWING");
                         AssetDatabase.Refresh();
                         AssetDatabase.ImportAsset(editorPath);
                     }
@@ -74,11 +66,15 @@ namespace lilToon
             string currentRPPath = lilDirectoryManager.GetCurrentRPPath();
             if(File.Exists(currentRPPath))
             {
-                var srRP = new StreamReader(currentRPPath);
-                string shaderRP = srRP.ReadLine();
-                string shaderAPI = srRP.ReadLine();
-                string shaderLTCGI = srRP.ReadLine();
-                srRP.Close();
+                string shaderRP;
+                string shaderAPI;
+                string shaderLTCGI;
+                using (var srRP = new StreamReader(currentRPPath))
+                {
+                    shaderRP = srRP.ReadLine();
+                    shaderAPI = srRP.ReadLine();
+                    shaderLTCGI = srRP.ReadLine();
+                }
 
                 bool shouldRewrite = false;
                 string projectRP = lilRenderPipelineReader.GetRP().ToString();
@@ -88,11 +84,12 @@ namespace lilToon
                 #else
                 string projectLTCGI = "";
                 #endif
-                var swRP = new StreamWriter(currentRPPath,false);
-                swRP.WriteLine(projectRP);
-                swRP.WriteLine(projectAPI);
-                swRP.WriteLine(projectLTCGI);
-                swRP.Close();
+                using (var swRP = new StreamWriter(currentRPPath, false))
+                {
+                    swRP.WriteLine(projectRP);
+                    swRP.WriteLine(projectAPI);
+                    swRP.WriteLine(projectLTCGI);
+                }
 
                 if(shaderRP != projectRP)
                 {

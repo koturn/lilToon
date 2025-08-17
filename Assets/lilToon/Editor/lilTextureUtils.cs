@@ -343,7 +343,7 @@ namespace lilToon
         private static Texture3D ReadCube(string path)
         {
             int size = -1;
-            var sr = new StreamReader(path);
+            using var sr = new StreamReader(path);
             string line;
             var colors = new List<Color>();
             while((line = sr.ReadLine()) != null)
@@ -362,7 +362,6 @@ namespace lilToon
                     catch(Exception e)
                     {
                         Debug.LogException(e);
-                        sr.Close();
                         return null;
                     }
                     continue;
@@ -380,11 +379,9 @@ namespace lilToon
                 catch(Exception e)
                 {
                     Debug.LogException(e);
-                    sr.Close();
                     return null;
                 }
             }
-            sr.Close();
             if(size <= 0 || colors == null || colors.Count < size*size*size) return null;
 
             var tex = new Texture3D(size, size, size, TextureFormat.RGBA32, false);

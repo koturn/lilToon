@@ -717,9 +717,7 @@ namespace lilToon
             string date = DateTime.Now.ToString("yyyy-MM-dd_HH.mm.ss");
             string path = EditorUtility.SaveFilePanel("Save Bug Report", "", "lilToonBugReport-" + date, "txt");
             if(string.IsNullOrEmpty(path)) return;
-            var sw = new StreamWriter(path, false);
-            sw.Write(sb.ToString());
-            sw.Close();
+            File.WriteAllText(path, sb.ToString());
         }
 
         private static string ReadVersion(string guid)
