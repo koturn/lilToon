@@ -11,7 +11,7 @@ using Object = UnityEngine.Object;
 
 namespace lilToon
 {
-    public class lilOptimizer
+    public static class lilOptimizer
     {
         private const int TYPE_OFFSET = 8;
 

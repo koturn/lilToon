@@ -13,7 +13,7 @@ using UnityEngine.Rendering;
 
 namespace lilToon
 {
-    public class lilMaterialUtils
+    public static class lilMaterialUtils
     {
         internal static void SetupMaterialWithRenderingMode(Material material, RenderingMode renderingMode, TransparentMode transparentMode, bool isoutl, bool islite, bool istess, bool ismulti)
         {

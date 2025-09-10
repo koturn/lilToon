@@ -76,7 +76,7 @@ namespace lilToon
     #endif
     #endif //LILTOON_DISABLE_ASSET_MODIFICATION
 
-    public class lilShaderContainer
+    public static class lilShaderContainer
     {
         private const string MULTI_COMPILE_FORWARD          = "#pragma lil_multi_compile_forward";
         private const string MULTI_COMPILE_FORWARDADD       = "#pragma lil_multi_compile_forwardadd";

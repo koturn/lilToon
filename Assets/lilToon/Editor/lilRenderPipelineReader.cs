@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 
 namespace lilToon
 {
-    public class lilRenderPipelineReader
+    public static class lilRenderPipelineReader
     {
         public static lilRenderPipeline GetRP()
         {

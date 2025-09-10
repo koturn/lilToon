@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace lilToon
 {
-    public class lilShaderManager
+    public static class lilShaderManager
     {
         public static Shader lts         = Shader.Find("lilToon");
         public static Shader ltsc        = Shader.Find("Hidden/lilToonCutout");

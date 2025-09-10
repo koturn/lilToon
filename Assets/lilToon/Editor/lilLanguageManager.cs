@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace lilToon
 {
-    public class lilLanguageManager
+    public static class lilLanguageManager
     {
         private static readonly Dictionary<string, string> loc = new Dictionary<string, string>();
 

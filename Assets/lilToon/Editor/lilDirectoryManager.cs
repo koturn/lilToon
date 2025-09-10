@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace lilToon
 {
-    internal class lilDirectoryManager
+    internal static class lilDirectoryManager
     {
         public const string editorSettingTempPath           = "Temp/lilToonEditorSetting";
         public const string languageSettingTempPath         = "Temp/lilToonLanguageSetting";

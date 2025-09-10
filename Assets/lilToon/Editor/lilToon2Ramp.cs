@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace lilToon
 {
-    public class lilToon2Ramp
+    public static class lilToon2Ramp
     {
         public static Texture2D Convert(Material origin, int width = 128)
         {

@@ -1,6 +1,6 @@
 namespace lilToon
 {
-    public class lilPropertyNameChecker
+    public static class lilPropertyNameChecker
     {
         private static bool IsRenderingPropertyInternal(string name)
         {

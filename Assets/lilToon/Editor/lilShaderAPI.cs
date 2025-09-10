@@ -4,7 +4,7 @@ using UnityEngine.Rendering;
 
 namespace lilToon
 {
-    public class lilShaderAPI
+    public static class lilShaderAPI
     {
         public static bool IsTextureLimitedAPI()
         {

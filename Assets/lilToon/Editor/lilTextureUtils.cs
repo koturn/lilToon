@@ -12,7 +12,7 @@ using Object = UnityEngine.Object;
 
 namespace lilToon
 {
-    public class lilTextureUtils
+    public static class lilTextureUtils
     {
         //------------------------------------------------------------------------------------------------------------------------------
         // Gradient

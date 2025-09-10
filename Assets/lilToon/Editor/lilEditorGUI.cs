@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace lilToon
 {
-    public class lilEditorGUI
+    public static class lilEditorGUI
     {
         public static GUIStyle boxOuter         = InitializeBox(4, 4, 2);
         public static GUIStyle boxInnerHalf     = InitializeBox(4, 2, 2);
